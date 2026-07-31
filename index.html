@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Maputo Delivery</title>
+
+  <style>
+    :root {
+      --primary: #ff4d00;
+      --primary2: #ff7a00;
+      --bg: #f5f6fa;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --dark: #0f172a;
+      --green: #16a34a;
+      --red: #dc2626;
+      --blue: #2563eb;
+      --yellow: #f59e0b;
+      --shadow: 0 16px 35px rgba(15,23,42,0.08);
+      --radius: 18px;
+    }
+
+    body.dark {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #263244;
+      --shadow: 0 16px 35px rgba(0,0,0,0.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, 94%);
+      margin: auto;
+    }
+
+    .topbar {
+      background: linear-gradient(90deg, var(--primary), var(--primary2));
+      color: #fff;
+      text-align: center;
+      padding: 9px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.dark header {
+      background: rgba(15,23,42,0.94);
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 22px;
+      font-weight: 950;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .logo span {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: var(--shadow);
+    }
+
+    .search {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      border-radius: 999px;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .search input {
+      border: none;
+      outline: none;
+      padding: 13px 16px;
+      background: transparent;
+      color: var(--text);
+    }
+
+    .search button {
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 0 18px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn,
+    .icon-btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      font-weight: 900;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn:hover,
+    .icon-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .icon-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 13px;
+    }
+
+    .btn.outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .btn.green { background: var(--green); }
+    .btn.red { background: var(--red); }
+    .btn.blue { background: var(--blue); }
+    .btn.yellow { background: var(--yellow); color: #111; }
+    .btn.darkbtn { background: var(--dark); }
+
+    .menu-line {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .menu-line a {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .menu-line a:hover {
+      color: var(--primary);
+    }
+
+    .section {
+      padding: 32px 0;
+    }
+
+    .hero {
+      padding: 34px 0 18px;
+    }
+
+    .hero-box {
+      min-height: 410px;
+      border-radius: 30px;
+      background:
+        linear-gradient(120deg, rgba(0,0,0,0.8), rgba(255,77,0,0.55)),
+        url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600&q=85");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      box-shadow: var(--shadow);
+      padding: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-box h1 {
+      font-size: clamp(36px, 7vw, 70px);
+      line-height: 1;
+      max-width: 760px;
+      margin-bottom: 18px;
+    }
+
+    .hero-box p {
+      font-size: 18px;
+      color: #fff7ed;
+      max-width: 660px;
+      margin-bottom: 24px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      font-size: 30px;
+    }
+
+    .section-head p,
+    .muted {
+      color: var(--muted);
+    }
+
+    .muted {
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .pad {
+      padding: 18px;
+    }
+
+    .cat {
+      padding: 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .cat:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+
+    .cat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: rgba(255,77,0,0.13);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(4, 1fr);
+      gap: 10px;
+      padding: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 12px 13px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      outline: none;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .input:focus {
+      border-color: var(--primary);
+    }
+
+    .rest-img,
+    .product-img {
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .restaurant-card,
+    .product-card {
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .restaurant-card:hover,
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,77,0,0.13);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.closed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .price {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 950;
+      margin: 8px 0;
+    }
+
+    .old {
+      color: var(--muted);
+      text-decoration: line-through;
+      font-size: 13px;
+      margin-left: 5px;
+      font-weight: 500;
+    }
+
+    .wish {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: white;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      font-size: 18px;
+      z-index: 2;
+    }
+
+    .wish.active {
+      color: var(--red);
+    }
+
+    .restaurant-hero {
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .restaurant-cover {
+      min-height: 320px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .restaurant-cover:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.78));
+    }
+
+    .restaurant-info {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      z-index: 2;
+      color: white;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .info-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .tab.active,
+    .tab:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 0.75fr;
+      gap: 18px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 82px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item img {
+      width: 82px;
+      height: 82px;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+
+    .qty {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .qty button {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .summary {
+      padding: 18px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .row.total {
+      font-size: 22px;
+      font-weight: 950;
+      border-bottom: none;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--primary);
+      font-size: 28px;
+      margin-top: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 14px;
+      vertical-align: top;
+    }
+
+    th {
+      background: rgba(255,77,0,0.1);
+      color: var(--primary);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--border);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .timeline-item.done .dot {
+      background: var(--green);
+    }
+
+    .timeline-item.current .dot {
+      background: var(--primary);
+    }
+
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.58);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      padding: 18px;
+    }
+
+    .modal-bg.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(580px, 100%);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+    }
+
+    .modal-head {
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: white;
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .role {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      padding: 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .role.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: white;
+      padding: 13px 18px;
+      border-radius: 999px;
+      z-index: 5000;
+      display: none;
+      box-shadow: var(--shadow);
+      max-width: 92%;
+      text-align: center;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    .float-wa {
+      position: fixed;
+      right: 18px;
+      bottom: 22px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #25d366;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 27px;
+      z-index: 2000;
+      box-shadow: var(--shadow);
+    }
+
+    footer {
+      background: #0b1020;
+      color: white;
+      padding: 38px 0 22px;
+      margin-top: 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+
+    footer p,
+    footer a {
+      color: #cbd5e1;
+      margin: 7px 0;
+      display: block;
+      font-size: 14px;
+    }
+
+    .danger-box {
+      border: 1px solid rgba(220,38,38,0.35);
+      background: rgba(220,38,38,0.08);
+      padding: 14px;
+      border-radius: 16px;
+      margin-bottom: 14px;
+    }
+
+    @media(max-width: 980px) {
+      .nav {
+        grid-template-columns: 1fr auto;
+      }
+
+      .search {
+        grid-column: 1 / -1;
+      }
+
+      .grid-4,
+      .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .stats,
+      .info-grid,
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width: 560px) {
+      .actions .label {
+        display: none;
+      }
+
+      .hero-box {
+        padding: 24px;
+        min-height: 430px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .grid-4,
+      .grid-3,
+      .grid-2,
+      .filters,
+      .stats,
+      .info-grid,
+      .footer-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-item {
+        grid-template-columns: 70px 1fr;
+      }
+
+      .cart-item img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .cart-item > div:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .role-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    Maputo Delivery — pedidos enviados para WhatsApp: +258 87 561 1914
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a href="#home" class="logo">
+          <span>MD</span>
+          Maputo Delivery
+        </a>
+
+        <div class="search">
+          <input id="topSearch" placeholder="Pesquisar restaurantes, produtos, bairros ou promoções...">
+          <button onclick="topSearch()">Pesquisar</button>
+        </div>
+
+        <div class="actions">
+          <button class="icon-btn" onclick="toggleDark()">🌙 <span class="label">Tema</span></button>
+          <button class="icon-btn" onclick="openLogin()">👤 <span class="label" id="userLabel">Entrar</span></button>
+          <button class="icon-btn" onclick="go('#cart')">🛒 <span id="cartCount">0</span></button>
+        </div>
+      </div>
+
+      <div class="menu-line">
+        <a href="#home">Início</a>
+        <a href="#restaurants">Restaurantes</a>
+        <a href="#client">Cliente</a>
+        <a href="#restaurant-panel">Restaurante</a>
+        <a href="#driver">Entregador</a>
+        <a href="#admin">Admin</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <a class="float-wa" target="_blank" href="https://wa.me/258875611914?text=Olá,%20preciso%20de%20suporte%20no%20Maputo%20Delivery.">☎</a>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <h2>Maputo Delivery</h2>
+        <p>Plataforma de delivery para Maputo com clientes, restaurantes, entregadores e administrador.</p>
+      </div>
+
+      <div>
+        <h3>Cliente</h3>
+        <a href="#restaurants">Restaurantes</a>
+        <a href="#cart">Carrinho</a>
+        <a href="#client">Minha conta</a>
+      </div>
+
+      <div>
+        <h3>Parceiros</h3>
+        <a href="#restaurant-panel">Painel Restaurante</a>
+        <a href="#driver">Entregador</a>
+        <a href="#admin">Administração</a>
+      </div>
+
+      <div>
+        <h3>Admin</h3>
+        <p>Email: langaedilson56@gmail.com</p>
+        <p>WhatsApp: +258 87 561 1914</p>
+      </div>
+    </div>
+
+    <div class="container" style="border-top:1px solid rgba(255,255,255,.12);padding-top:18px;text-align:center;color:#94a3b8">
+      © 2025 Maputo Delivery. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <div id="loginModal" class="modal-bg">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h2>Entrar / Criar Conta</h2>
+          <p>Cliente, Restaurante, Entregador ou Administrador</p>
+        </div>
+        <button class="icon-btn" onclick="closeLogin()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="role-grid">
+          <button id="role-cliente" class="role active" onclick="selectRole('cliente')">Cliente</button>
+          <button id="role-restaurante" class="role" onclick="selectRole('restaurante')">Restaurante</button>
+          <button id="role-entregador" class="role" onclick="selectRole('entregador')">Entregador</button>
+          <button id="role-admin" class="role" onclick="selectRole('admin')">Admin</button>
+        </div>
+
+        <form class="form-grid" onsubmit="login(event)">
+          <input id="loginName" class="input" placeholder="Nome completo" required>
+          <input id="loginPhone" class="input" placeholder="Telefone" required>
+          <input id="loginEmail" class="input full" type="email" placeholder="Email" required>
+          <input id="loginPassword" class="input full" type="password" placeholder="Palavra-passe" required>
+
+          <select id="restaurantSelect" class="input full" style="display:none"></select>
+
+          <input id="driverDocument" class="input full" style="display:none" placeholder="Documento do entregador / BI / Carta">
+
+          <button class="btn full">Entrar / Criar Conta</button>
+        </form>
+
+        <p class="muted" style="margin-top:12px">
+          No TrebEdit, email e Wha
